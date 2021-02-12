@@ -22,7 +22,7 @@ public class AppView extends JFrame {
 	private Controller chronometer;
 	private static final String WINDOW_TITLE = "OOP Exam";
 	private final JLabel centeredLabel = new JLabel(WINDOW_TITLE);
-	private final JLabel notificationLabel = new JLabel("papero");
+	private final JLabel notificationLabel = new JLabel();
 	
 	public AppView() {
 		this.chronometer = new ChronoController(new ChronoTime(), this);

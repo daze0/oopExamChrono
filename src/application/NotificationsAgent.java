@@ -43,7 +43,7 @@ public class NotificationsAgent extends Thread {
 	public void run() {
 		while (!this.stopped) {
 			switch (this.chronometer.getTime()) {
-			case "30:00":
+			case "00:10":
 				SwingUtilities.invokeLater(() -> {
 					this.view.updateLabel(Labels.NOTIFICATIONS, Notifications.FIRST_DEADLINE_15.getDescription());
 					/*

@@ -3,6 +3,7 @@
  */
 package application;
 
+import java.util.Collections;
 import java.util.EventListener;
 import java.util.HashSet;
 import java.util.Set;
@@ -25,5 +26,9 @@ public class EventListenerList<T extends EventListener> {
 
     public void fireListeners(final Consumer<T> actionToPerform) {
         this.listeners.forEach(actionToPerform);
+    }
+
+    public Set<T> getListeners() {
+        return Collections.unmodifiableSet(this.listeners);
     }
 }

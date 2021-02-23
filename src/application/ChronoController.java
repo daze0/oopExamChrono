@@ -2,37 +2,51 @@ package application;
 
 public class ChronoController implements Controller {
 
-	private static final int STEP = 1000;
-	
-	private ChronoAgent agent;
-	private Time chronometer;
-	private AppView view;
-	private NotificationsAgent notificationsAgent;
-	
-	public ChronoController(final Time chronometer, final AppView view) {
-		this.chronometer = chronometer;
-		this.view = view;
-		this.notificationsAgent = new NotificationsAgent(this.view, this);
-		this.notificationsAgent.start();
-	}
+    private static final long STEP = 1000;
 
-	@Override
-	public void notifyStarted() {
-		this.agent = new ChronoAgent(STEP, this.chronometer, this.view);
-		this.agent.start();
-	}
+    private final ChronoAgent chronoAgent;
+    private final MillisecondsTimer timer = new SimpleMillisecondsTimer(ChronoController.STEP);
+    private final NotificationsAgent notificationsAgent;
 
-	@Override
-	public void notifyReset() {
-		this.chronometer.reset();
-	}
+    public ChronoController() {
+        this.notificationsAgent = new NotificationsAgent(this.timer);
+        this.chronoAgent = new ChronoAgent(ChronoController.STEP, this.timer);
+    }
 
-	@Override
-	public void notifyStopped() {
-		this.agent.forceStop();
-	}
-	
-	public String getTime() {
-		return this.chronometer.toString();
-	}
+    @Override
+    public void addChronoListener(final TimerTickListener listener) {
+        this.chronoAgent.addEventListener(listener);
+    }
+
+    @Override
+    public void removeChronoListener(final TimerTickListener listener) {
+        this.chronoAgent.removeEventListener(listener);
+    }
+
+    @Override
+    public void addNotificationsListener(final NotificationListener listener) {
+        this.notificationsAgent.addEventListener(listener);
+    }
+
+    @Override
+    public void removeNotificationsListener(final NotificationListener listener) {
+        this.notificationsAgent.removeEventListener(listener);
+    }
+
+    @Override
+    public void notifyStarted() {
+        this.chronoAgent.start();
+        this.notificationsAgent.start();
+    }
+
+    @Override
+    public void notifyReset() {
+        this.timer.reset();
+    }
+
+    @Override
+    public void notifyStopped() {
+        this.chronoAgent.forceStop();
+        this.notificationsAgent.forceStop();
+    }
 }

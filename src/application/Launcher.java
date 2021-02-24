@@ -1,6 +1,6 @@
 package application;
 
-public class Test {
+public class Launcher {
 	public static void main(String[] args) {
 		new AppView();
 	}
